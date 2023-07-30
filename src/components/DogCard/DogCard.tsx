@@ -1,21 +1,28 @@
 import React from "react";
 import "./DogCard.scss";
+import DogCardImage from "./DogCardImage";
 
 export type dogsData = {
-  image: string;
   dogName: string;
   breed: string;
   height: string;
   lifeSpan: string;
+  reference_image_id: any;
 };
 
-function DogCard({ image, dogName, breed, height, lifeSpan }: dogsData) {
+function DogCard({
+  dogName,
+  breed,
+  height,
+  lifeSpan,
+  reference_image_id,
+}: dogsData) {
   return (
     <div className="dog-card-wrapper">
       <div className="image-wrapper">
-        <img
-          src={image ? image : "https://i.ibb.co/9bBBn8w/Cute-Dog-Logo.png"}
-          alt="dogImage"
+        <DogCardImage
+          dagName={dogName}
+          reference_image_id={reference_image_id}
         />
       </div>
       <div className="dog-details">

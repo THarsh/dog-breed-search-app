@@ -5,22 +5,41 @@ import SearchBox from "./components/Search/SearchBox";
 import Source from "./api/source";
 
 export type dogsData = {
-  image: {
-    url: string;
-  };
   name: string;
   breed_group: string;
   height: {
     metric: string;
   };
   life_span: string;
+  reference_image_id: string;
 };
 
 function App() {
   const [dogs, setDogs] = useState<dogsData[] | null>();
+  const [dogSearchResult, setDogsSearchResult] = useState<dogsData[] | null>();
+  const [searchText, setSearchText] = useState("");
+  const [searched, setSearched] = useState(false);
 
   //Dog search
-  const doSearch = () => {};
+  const searchDogs = async () => {
+    try {
+      const response = await Source.get(`search?q=${searchText}`);
+      const data = await response.data;
+      setDogsSearchResult(data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleSubmit = (e: any) => {
+    e.preventDefault();
+    searchDogs();
+    setSearched(true);
+  };
+
+  const onChange = (e: any) => {
+    setSearchText(e.target.value);
+  };
 
   //get Dogs list
   useEffect(() => {
@@ -33,10 +52,12 @@ function App() {
         console.error(error);
       }
     };
+    setSearched(false);
     getDogList();
   }, []);
 
-  console.log(dogs);
+  console.log("---search result->", dogSearchResult);
+  console.log("---searched->", searched);
 
   return (
     <div className="App">
@@ -44,23 +65,44 @@ function App() {
         <section className="main-section">
           <div className="main-wrapper">
             <h2>Dog Breed Search App</h2>
-            <SearchBox doSearch={doSearch} />
+            <SearchBox onChange={onChange} handleSubmit={handleSubmit} />
             <hr />
             <div className="cards-main-wrapper">
-              {dogs
-                ? dogs.map((dog, index) => {
-                    return (
-                      <DogCard
-                        key={index}
-                        image={dog.image.url}
-                        dogName={dog.name}
-                        breed={dog.breed_group}
-                        height={dog.height.metric}
-                        lifeSpan={dog.life_span}
-                      />
-                    );
-                  })
-                : null}
+              {!searched ? (
+                <>
+                  {dogs
+                    ? dogs.map((dog, index) => {
+                        return (
+                          <DogCard
+                            key={index}
+                            reference_image_id={dog.reference_image_id}
+                            dogName={dog.name}
+                            breed={dog.breed_group}
+                            height={dog.height.metric}
+                            lifeSpan={dog.life_span}
+                          />
+                        );
+                      })
+                    : null}
+                </>
+              ) : (
+                <>
+                  {dogSearchResult
+                    ? dogSearchResult.map((dog, index) => {
+                        return (
+                          <DogCard
+                            key={index}
+                            reference_image_id={dog.reference_image_id}
+                            dogName={dog.name}
+                            breed={dog.breed_group}
+                            height={dog.height.metric}
+                            lifeSpan={dog.life_span}
+                          />
+                        );
+                      })
+                    : null}
+                </>
+              )}
             </div>
           </div>
         </section>

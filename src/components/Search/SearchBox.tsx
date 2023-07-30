@@ -1,22 +1,27 @@
 import React from "react";
 import "./SearchBox.scss";
 
-function SearchBox({doSearch}:any) {
+function SearchBox({ onChange, handleSubmit }: any) {
   return (
     <div className="search-box-wrapper">
       <p>Search</p>
-      <input
-        className="form-control"
-        type="text"
-        name="search"
-        placeholder="Search.."
-        onChange={doSearch}
+      <form
+        onSubmit={handleSubmit}
+        className="max-w-xl mx-auto"
         autoComplete="off"
-        autoFocus
-      />
-      <button>GO</button>
+      >
+        <input
+          className="form-control"
+          type="text"
+          name="search"
+          placeholder="Search.."
+          onChange={onChange}
+          autoComplete="off"
+          autoFocus
+        />
+      </form>
+      <button onClick={handleSubmit}>GO</button>
     </div>
-
   );
 }
 
