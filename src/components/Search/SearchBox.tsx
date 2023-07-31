@@ -5,11 +5,7 @@ function SearchBox({ onChange, handleSubmit }: any) {
   return (
     <div className="search-box-wrapper">
       <p>Search</p>
-      <form
-        onSubmit={handleSubmit}
-        className="max-w-xl mx-auto"
-        autoComplete="off"
-      >
+      <form onSubmit={handleSubmit} autoComplete="off">
         <input
           className="form-control"
           type="text"
