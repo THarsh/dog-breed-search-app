@@ -58,7 +58,6 @@ function Home() {
   return (
     <section className="main-section">
       <div className="main-wrapper">
-        <h2>Dog Breed Search App</h2>
         <SearchBox onChange={onChange} handleSubmit={handleSubmit} />
         <hr />
         <div className="cards-main-wrapper">
