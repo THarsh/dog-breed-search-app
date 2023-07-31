@@ -5,17 +5,7 @@ import Source from "../../api/source";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-
-export type dogsData = {
-  name: string;
-  breed_group: string;
-  height: {
-    metric: string;
-  };
-  life_span: string;
-  reference_image_id: string;
-  bred_for: string;
-};
+import { dogsData } from "../../types/main";
 
 function Home() {
   const [dogs, setDogs] = useState<dogsData[] | null>();
@@ -77,7 +67,7 @@ function Home() {
                         <DogCard
                           key={index}
                           referenceImageId={dog.reference_image_id}
-                          dogName={dog.name}
+                          name={dog.name}
                           breed={dog.breed_group}
                           height={dog.height.metric}
                           lifeSpan={dog.life_span}
@@ -97,7 +87,7 @@ function Home() {
                         <DogCard
                           key={index}
                           referenceImageId={dog.reference_image_id}
-                          dogName={dog.name}
+                          name={dog.name}
                           breed={dog.breed_group}
                           height={dog.height.metric}
                           lifeSpan={dog.life_span}

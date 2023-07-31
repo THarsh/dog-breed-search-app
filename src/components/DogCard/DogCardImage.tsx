@@ -1,12 +1,8 @@
 import React from "react";
 import Card from "react-bootstrap/Card";
+import { dogCardImage } from "../../types/main";
 
-export type dogsData = {
-  dagName: string;
-  reference_image_id: any;
-};
-
-function DogCardImage({ dagName, reference_image_id }: dogsData) {
+function DogCardImage({ name, reference_image_id }: dogCardImage) {
   const dogImageUrl = () => {
     if (!reference_image_id) {
       const imageUrl = `https://i.ibb.co/9bBBn8w/Cute-Dog-Logo.png`;
@@ -19,7 +15,7 @@ function DogCardImage({ dagName, reference_image_id }: dogsData) {
   const imageUrl = dogImageUrl();
   return (
     <div className="card-image-wrapper">
-      <Card.Img variant="top" src={imageUrl} alt={dagName} />
+      <Card.Img variant="top" src={imageUrl} alt={name} />
     </div>
   );
 }
