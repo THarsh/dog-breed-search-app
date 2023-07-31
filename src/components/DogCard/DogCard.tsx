@@ -1,5 +1,7 @@
 import React from "react";
 import "./DogCard.scss";
+import Card from "react-bootstrap/Card";
+import ListGroup from "react-bootstrap/ListGroup";
 import DogCardImage from "./DogCardImage";
 
 export type dogsData = {
@@ -7,7 +9,8 @@ export type dogsData = {
   breed: string;
   height: string;
   lifeSpan: string;
-  reference_image_id: any;
+  referenceImageId: string;
+  bredFor: string;
 };
 
 function DogCard({
@@ -15,29 +18,28 @@ function DogCard({
   breed,
   height,
   lifeSpan,
-  reference_image_id,
+  referenceImageId,
+  bredFor,
 }: dogsData) {
   return (
-    <div className="dog-card-wrapper">
-      <div className="image-wrapper">
-        <DogCardImage
-          dagName={dogName}
-          reference_image_id={reference_image_id}
-        />
-      </div>
-      <div className="dog-details">
-        <h5>{dogName}</h5>
-        <p>
+    <Card className="card-wrapper">
+      <DogCardImage dagName={dogName} reference_image_id={referenceImageId} />
+      <Card.Body>
+        <Card.Title>{dogName}</Card.Title>
+        <Card.Text>{bredFor}</Card.Text>
+      </Card.Body>
+      <ListGroup className="list-group-flush">
+        <ListGroup.Item>
           <strong>Breed :</strong> {breed}
-        </p>
-        <p>
+        </ListGroup.Item>
+        <ListGroup.Item>
           <strong>Height :</strong> {height}
-        </p>
-        <p>
+        </ListGroup.Item>
+        <ListGroup.Item>
           <strong>Life Span :</strong> {lifeSpan}
-        </p>
-      </div>
-    </div>
+        </ListGroup.Item>
+      </ListGroup>
+    </Card>
   );
 }
 

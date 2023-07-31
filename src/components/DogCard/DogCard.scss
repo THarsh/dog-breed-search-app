@@ -1,18 +1,11 @@
-.dog-card-wrapper {
-  background-color: bisque;
-
-  .image-wrapper {
-    .card-image-wrapper {
-      height: 200px;
+.card-wrapper {
+  margin-bottom: 30px;
+  .card-image-wrapper {
+    height: 230px;
+    img {
+      height: 100%;
       width: 100%;
-      img {
-        height: 100%;
-        width: 100%;
-        object-fit: cover;
-      }
+      object-fit: cover;
     }
-  }
-  .dog-details {
-    padding: 10px;
   }
 }

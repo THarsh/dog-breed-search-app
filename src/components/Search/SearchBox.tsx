@@ -4,19 +4,17 @@ import "./SearchBox.scss";
 function SearchBox({ onChange, handleSubmit }: any) {
   return (
     <div className="search-box-wrapper">
-      <p>Search</p>
       <form onSubmit={handleSubmit} autoComplete="off">
         <input
           className="form-control"
           type="text"
           name="search"
-          placeholder="Search.."
+          placeholder="Search dog breed.."
           onChange={onChange}
           autoComplete="off"
           autoFocus
         />
       </form>
-      <button onClick={handleSubmit}>GO</button>
     </div>
   );
 }

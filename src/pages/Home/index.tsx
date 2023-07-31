@@ -2,6 +2,9 @@ import React, { useEffect, useState } from "react";
 import DogCard from "../../components/DogCard/DogCard";
 import SearchBox from "../../components/Search/SearchBox";
 import Source from "../../api/source";
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
 
 export type dogsData = {
   name: string;
@@ -11,6 +14,7 @@ export type dogsData = {
   };
   life_span: string;
   reference_image_id: string;
+  bred_for: string;
 };
 
 function Home() {
@@ -56,24 +60,30 @@ function Home() {
   }, []);
 
   return (
-    <section className="main-section">
-      <div className="main-wrapper">
-        <SearchBox onChange={onChange} handleSubmit={handleSubmit} />
-        <hr />
-        <div className="cards-main-wrapper">
+    <section className="home-section">
+      <Container>
+        <Row>
+          <Col md={{ span: 6, offset: 3 }}>
+            <SearchBox onChange={onChange} handleSubmit={handleSubmit} />
+          </Col>
+        </Row>
+        <Row>
           {!searched ? (
             <>
               {dogs
                 ? dogs.map((dog, index) => {
                     return (
-                      <DogCard
-                        key={index}
-                        reference_image_id={dog.reference_image_id}
-                        dogName={dog.name}
-                        breed={dog.breed_group}
-                        height={dog.height.metric}
-                        lifeSpan={dog.life_span}
-                      />
+                      <Col xs={12} sm={6} md={4}>
+                        <DogCard
+                          key={index}
+                          referenceImageId={dog.reference_image_id}
+                          dogName={dog.name}
+                          breed={dog.breed_group}
+                          height={dog.height.metric}
+                          lifeSpan={dog.life_span}
+                          bredFor={dog.bred_for}
+                        />
+                      </Col>
                     );
                   })
                 : null}
@@ -83,21 +93,24 @@ function Home() {
               {dogSearchResult
                 ? dogSearchResult.map((dog, index) => {
                     return (
-                      <DogCard
-                        key={index}
-                        reference_image_id={dog.reference_image_id}
-                        dogName={dog.name}
-                        breed={dog.breed_group}
-                        height={dog.height.metric}
-                        lifeSpan={dog.life_span}
-                      />
+                      <Col xs={12} md={3}>
+                        <DogCard
+                          key={index}
+                          referenceImageId={dog.reference_image_id}
+                          dogName={dog.name}
+                          breed={dog.breed_group}
+                          height={dog.height.metric}
+                          lifeSpan={dog.life_span}
+                          bredFor={dog.bred_for}
+                        />
+                      </Col>
                     );
                   })
                 : null}
             </>
           )}
-        </div>
-      </div>
+        </Row>
+      </Container>
     </section>
   );
 }

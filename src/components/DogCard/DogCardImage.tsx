@@ -1,5 +1,5 @@
 import React from "react";
-import "./DogCard.scss";
+import Card from "react-bootstrap/Card";
 
 export type dogsData = {
   dagName: string;
@@ -19,7 +19,7 @@ function DogCardImage({ dagName, reference_image_id }: dogsData) {
   const imageUrl = dogImageUrl();
   return (
     <div className="card-image-wrapper">
-      <img src={imageUrl} alt={dagName} />
+      <Card.Img variant="top" src={imageUrl} alt={dagName} />
     </div>
   );
 }
