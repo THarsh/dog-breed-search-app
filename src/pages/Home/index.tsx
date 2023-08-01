@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import DogCard from "../../components/DogCard/DogCard";
 import SearchBox from "../../components/Search/SearchBox";
 import Source from "../../api/source";
@@ -9,70 +9,35 @@ import { dogsData } from "../../types/main";
 import useDebounce from "../../hooks/useDebounce";
 
 function Home() {
-  const [dogs, setDogs] = useState<dogsData[] | null>();
-  const [dogSearchResult, setDogsSearchResult] = useState<dogsData[] | null>();
   const [searchText, setSearchText] = useState("");
-  const [searched, setSearched] = useState(true);
+  const [page, setPage] = useState(0);
   const debouncedSearchValue = useDebounce(searchText, 1000);
-
-  const [listResult, setListResult] = useState<dogsData[] | null>();
-
-  // Dog int list API
-  const getDogList = async () => {
-    try {
-      const results = await Source.get("?limit=10&page=0");
-      const data = await results.data;
-      setDogs(data);
-    } catch (error) {
-      console.error(error);
-    }
-    setSearched(false);
-  };
-
-  // Dog search API
-  const searchDogs = async () => {
-    try {
-      const response = await Source.get(`search?q=${debouncedSearchValue}`);
-      const data = await response.data;
-      setDogsSearchResult(data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  const [listResult, setListResult] = useState<dogsData[]>([]);
 
   const searchTerm = (e: any) => {
     let onChangeValue = e.target.value;
     setSearchText(onChangeValue);
   };
 
-  //------------------
-  const fireOnBySearch = async () => {
-    if (searchText) {
-      console.log("searchT thiyanwa 1", searchText);
-      try {
-        const response = await Source.get(`search?q=${debouncedSearchValue}`);
-        const data = await response.data;
-        setListResult(data);
-      } catch (error) {
-        console.error(error);
+  const fireOnBySearch = useCallback(async () => {
+    try {
+      let result;
+      if (debouncedSearchValue) {
+        result = await Source.get(`breeds/search?q=${debouncedSearchValue}`);
+      } else {
+        result = await Source.get(`breeds?limit=10&page=${page}`);
       }
-    } else {
-      console.log("searchT Na", searchText);
-      try {
-        const results = await Source.get("?limit=10&page=0");
-        const data = await results.data;
-        setListResult(data);
-      } catch (error) {
-        console.error(error);
+      if (result?.status === 200) {
+        setListResult(result?.data);
       }
+    } catch (error) {
+      console.error(error);
     }
-  };
+  }, [debouncedSearchValue]);
 
   useEffect(() => {
     fireOnBySearch();
-  }, [searchTerm]);
-
-  console.log("listResult-->", listResult);
+  }, [fireOnBySearch]);
 
   return (
     <section className="home-section">
@@ -83,10 +48,10 @@ function Home() {
           </Col>
         </Row>
         <Row>
-          {listResult
+          {listResult.length > 0
             ? listResult.map((dog, index) => {
                 return (
-                  <Col xs={12} sm={6} md={4}>
+                  <Col xs={12} sm={6} md={4} key={dog.id.toString()}>
                     <DogCard
                       key={index}
                       referenceImageId={dog.reference_image_id}
@@ -99,7 +64,7 @@ function Home() {
                   </Col>
                 );
               })
-            : null}
+            : "Loading..."}
         </Row>
       </Container>
     </section>

@@ -1,4 +1,5 @@
 export type dogsData = {
+  id: number;
   name: string;
   breed_group: string;
   height: {
