@@ -1,7 +1,7 @@
 import React from "react";
 import "./SearchBox.scss";
 
-function SearchBox({ onChange, handleSubmit }: any) {
+function SearchBox({ searchValue, onChange, handleSubmit }: any) {
   return (
     <div className="search-box-wrapper">
       <form onSubmit={handleSubmit} autoComplete="off">
@@ -13,6 +13,7 @@ function SearchBox({ onChange, handleSubmit }: any) {
           onChange={onChange}
           autoComplete="off"
           autoFocus
+          value={searchValue}
         />
       </form>
     </div>
