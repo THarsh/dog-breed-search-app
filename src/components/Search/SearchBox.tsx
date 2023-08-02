@@ -1,5 +1,4 @@
 import React from "react";
-import "./SearchBox.scss";
 
 function SearchBox({ searchValue, onChange }: any) {
   return (

@@ -3,12 +3,14 @@ import DogCard from "../../components/DogCard/DogCard";
 import SearchBox from "../../components/Search/SearchBox";
 import Source from "../../api/source";
 import Container from "react-bootstrap/Container";
+import Spinner from "react-bootstrap/Spinner";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { dogsData } from "../../types/main";
 import useDebounce from "../../hooks/useDebounce";
 import Button from "react-bootstrap/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
 import {
   faArrowDownAZ,
   faArrowDownZA,
@@ -107,13 +109,8 @@ function Home() {
     <section className="home-section">
       <Container>
         <Row>
-          <Col md={{ span: 6, offset: 3 }}>
-            <SearchBox onChange={searchTerm} value={debouncedSearchValue} />
-          </Col>
-        </Row>
-        <Row>
-          <Col className=" mb-5" md={{ span: 4, offset: 4 }}>
-            <h3>Sort By</h3>
+          <Col className="mb-5" md={4}>
+            <h5>Sort By</h5>
             <hr />
             <div className="d-flex justify-content-between">
               <Button variant="outline-primary" onClick={sortByName}>
@@ -141,27 +138,36 @@ function Home() {
                 )}
               </Button>
             </div>
+          </Col>
+          <Col md={{ span: 6, offset: 2 }}>
+            <h5>Search Dog</h5>
             <hr />
+            <SearchBox onChange={searchTerm} value={debouncedSearchValue} />
           </Col>
         </Row>
+        <Row></Row>
         <Row>
-          {listResult.length > 0
-            ? listResult.map((dog, index) => {
-                return (
-                  <Col xs={12} sm={6} md={4} key={dog.id.toString()}>
-                    <DogCard
-                      key={index}
-                      referenceImageId={dog.reference_image_id}
-                      name={dog.name}
-                      breed={dog.breed_group}
-                      height={dog.height.metric}
-                      lifeSpan={dog.life_span}
-                      bredFor={dog.bred_for}
-                    />
-                  </Col>
-                );
-              })
-            : "Loading..."}
+          {listResult.length > 0 ? (
+            listResult.map((dog, index) => {
+              return (
+                <Col xs={12} sm={6} md={4} key={dog.id.toString()}>
+                  <DogCard
+                    key={index}
+                    referenceImageId={dog.reference_image_id}
+                    name={dog.name}
+                    breed={dog.breed_group}
+                    height={dog.height.metric}
+                    lifeSpan={dog.life_span}
+                    bredFor={dog.bred_for}
+                  />
+                </Col>
+              );
+            })
+          ) : (
+            <Col md={12} className="d-flex justify-content-center">
+              <Spinner animation="grow" />
+            </Col>
+          )}
         </Row>
       </Container>
     </section>
