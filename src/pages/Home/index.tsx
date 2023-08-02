@@ -139,7 +139,7 @@ function Home() {
               </Button>
             </div>
           </Col>
-          <Col md={6} lg={{ span: 6, offset: 2 }}>
+          <Col className="mb-5" md={6} lg={{ span: 6, offset: 2 }}>
             <h5>Search Dog</h5>
             <hr />
             <SearchBox onChange={searchTerm} value={debouncedSearchValue} />
