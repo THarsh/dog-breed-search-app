@@ -7,12 +7,22 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { dogsData } from "../../types/main";
 import useDebounce from "../../hooks/useDebounce";
+import Button from "react-bootstrap/Button";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faArrowDownAZ,
+  faArrowDownZA,
+  faArrowDownWideShort,
+  faArrowDownShortWide,
+} from "@fortawesome/free-solid-svg-icons";
 
 function Home() {
   const [searchText, setSearchText] = useState("");
-  const [page, setPage] = useState(0);
   const debouncedSearchValue = useDebounce(searchText, 1000);
   const [listResult, setListResult] = useState<dogsData[]>([]);
+  const [nameSortOrder, setNameSortOrder] = useState("descending");
+  const [heightSortOrder, setHeightSortOrder] = useState("descending");
+  const [lifeSpanSortOrder, setLifeSpanSortOrder] = useState("descending");
 
   const searchTerm = (e: any) => {
     let onChangeValue = e.target.value;
@@ -25,7 +35,7 @@ function Home() {
       if (debouncedSearchValue) {
         result = await Source.get(`breeds/search?q=${debouncedSearchValue}`);
       } else {
-        result = await Source.get(`breeds?limit=10&page=${page}`);
+        result = await Source.get(`breeds?limit=30&page=0`);
       }
       if (result?.status === 200) {
         setListResult(result?.data);
@@ -35,9 +45,63 @@ function Home() {
     }
   }, [debouncedSearchValue]);
 
+  //sorting by Name
+  const sortByName = () => {
+    const sortByDogName = [...listResult].sort((a, b) =>
+      nameSortOrder === "ascending"
+        ? a.name.localeCompare(b.name)
+        : b.name.localeCompare(a.name)
+    );
+    setListResult(sortByDogName);
+    setNameSortOrder(
+      nameSortOrder === "ascending" ? "descending" : "ascending"
+    );
+  };
+
+  //sorting height
+  const sortByHeight = () => {
+    const sortByDogHeight = [...listResult].sort((a, b) => {
+      const heightA = parseFirst2Characters(a.height.metric);
+      const heightB = parseFirst2Characters(b.height.metric);
+
+      if (heightSortOrder === "ascending") {
+        return heightA - heightB;
+      } else {
+        return heightB - heightA;
+      }
+    });
+    setListResult(sortByDogHeight);
+    setHeightSortOrder(
+      heightSortOrder === "ascending" ? "descending" : "ascending"
+    );
+  };
+
+  //sort by life Span
+  const sortByLifeSpan = () => {
+    const sortByDogLifeSpan = [...listResult].sort((a, b) => {
+      const lifeA = parseFirst2Characters(a.life_span);
+      const lifeB = parseFirst2Characters(b.life_span);
+
+      if (lifeSpanSortOrder === "ascending") {
+        return lifeA - lifeB;
+      } else {
+        return lifeB - lifeA;
+      }
+    });
+    setListResult(sortByDogLifeSpan);
+    setLifeSpanSortOrder(
+      lifeSpanSortOrder === "ascending" ? "descending" : "ascending"
+    );
+  };
+
   useEffect(() => {
     fireOnBySearch();
   }, [fireOnBySearch]);
+
+  //Getting First 2 Characters To Do Sorting
+  const parseFirst2Characters = (val: any) => {
+    return parseInt(val.substring(0, 2).trim());
+  };
 
   return (
     <section className="home-section">
@@ -45,6 +109,39 @@ function Home() {
         <Row>
           <Col md={{ span: 6, offset: 3 }}>
             <SearchBox onChange={searchTerm} value={debouncedSearchValue} />
+          </Col>
+        </Row>
+        <Row>
+          <Col className=" mb-5" md={{ span: 4, offset: 4 }}>
+            <h3>Sort By</h3>
+            <hr />
+            <div className="d-flex justify-content-between">
+              <Button variant="outline-primary" onClick={sortByName}>
+                Name{" : "}
+                {nameSortOrder === "descending" ? (
+                  <FontAwesomeIcon icon={faArrowDownAZ} />
+                ) : (
+                  <FontAwesomeIcon icon={faArrowDownZA} />
+                )}
+              </Button>
+              <Button variant="outline-primary" onClick={sortByHeight}>
+                Height{" : "}
+                {heightSortOrder === "descending" ? (
+                  <FontAwesomeIcon icon={faArrowDownShortWide} />
+                ) : (
+                  <FontAwesomeIcon icon={faArrowDownWideShort} />
+                )}
+              </Button>
+              <Button variant="outline-primary" onClick={sortByLifeSpan}>
+                LifeSpan{" : "}
+                {lifeSpanSortOrder === "descending" ? (
+                  <FontAwesomeIcon icon={faArrowDownShortWide} />
+                ) : (
+                  <FontAwesomeIcon icon={faArrowDownWideShort} />
+                )}
+              </Button>
+            </div>
+            <hr />
           </Col>
         </Row>
         <Row>
