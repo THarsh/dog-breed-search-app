@@ -109,7 +109,7 @@ function Home() {
     <section className="home-section">
       <Container>
         <Row>
-          <Col className="mb-5" md={4}>
+          <Col className="mb-5" md={6} lg={4}>
             <h5>Sort By</h5>
             <hr />
             <div className="d-flex justify-content-between">
@@ -139,7 +139,7 @@ function Home() {
               </Button>
             </div>
           </Col>
-          <Col md={{ span: 6, offset: 2 }}>
+          <Col md={6} lg={{ span: 6, offset: 2 }}>
             <h5>Search Dog</h5>
             <hr />
             <SearchBox onChange={searchTerm} value={debouncedSearchValue} />
