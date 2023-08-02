@@ -35,7 +35,7 @@ function Home() {
       if (debouncedSearchValue) {
         result = await Source.get(`breeds/search?q=${debouncedSearchValue}`);
       } else {
-        result = await Source.get(`breeds?limit=30&page=0`);
+        result = await Source.get(`breeds?limit=50&page=0`);
       }
       if (result?.status === 200) {
         setListResult(result?.data);
@@ -45,7 +45,7 @@ function Home() {
     }
   }, [debouncedSearchValue]);
 
-  //sorting by Name
+  //sort  by name
   const sortByName = () => {
     const sortByDogName = [...listResult].sort((a, b) =>
       nameSortOrder === "ascending"
@@ -58,7 +58,7 @@ function Home() {
     );
   };
 
-  //sorting height
+  //sort by height
   const sortByHeight = () => {
     const sortByDogHeight = [...listResult].sort((a, b) => {
       const heightA = parseFirst2Characters(a.height.metric);
@@ -98,7 +98,7 @@ function Home() {
     fireOnBySearch();
   }, [fireOnBySearch]);
 
-  //Getting First 2 Characters To Do Sorting
+  //Get first two characters
   const parseFirst2Characters = (val: any) => {
     return parseInt(val.substring(0, 2).trim());
   };

@@ -1,4 +1,3 @@
-import React from "react";
 import "./Header.scss";
 import Navbar from "react-bootstrap/Navbar";
 import Container from "react-bootstrap/Container";
